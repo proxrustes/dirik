@@ -5,12 +5,30 @@ import { Location } from "../../../definitions/types/Location"
 import CurrentShiftTable from "@/components/tables/ShiftTable";
 import { ShiftOverviewBox } from "@/components/general/ShiftOverview";
 import { Shift } from "@/definitions/types/Shift";
+import { Employee } from "@/definitions/types/Employee";
+import { UserBox } from "@/components/general/UserBox";
 
 const mockShift: Shift = {
     id: 1, locationId: 0, creatorId: 0, location: "Johanisstr. 34", startDate: "29/09/2024",
     availableCash: 110,
     totalCash: 4550,
     totalMoney: 9000
+}
+const mockUser: Employee ={
+    id: 0,
+    fullName: "Ivan Boiko",
+    position: "Admin",
+    phone: "string",
+    email: "string",
+    homeAdress: "string",
+    location_id: 1,
+    location: "dirik",
+    salaryFixed: 1300,
+    salarayPercent: 15,
+    availableSalary: 2400,
+    passportNumber: "123",
+    INN: "1234"
+    
 }
 
 export default function CurrentShift() {
@@ -19,13 +37,14 @@ export default function CurrentShift() {
     const [currentLocation, setLocation] = useState(locations[0])
     const [financeView, setFinanceView] = useState(false)
 
-    console.log(financeView)
     const handleLocationClick = (location: Location) => {
         setLocation(location);
     };
 
     if (locations.length > 0) {
         return (
+            <Stack direction="row" gap={4}>
+            <UserBox pageType="currentShift"/>
             <Stack sx={{ width: "100%" }}>
                 <Box sx={{ height: "24px", pl: 2 }}>
                     <Breadcrumbs aria-label="breadcrumb">
@@ -60,6 +79,8 @@ export default function CurrentShift() {
                     <ShiftOverviewBox shift={mockShift} />
                 </Stack>
             </Stack>
+        </Stack>
+            
         )
     }
     return (<Typography>Loading</Typography>);

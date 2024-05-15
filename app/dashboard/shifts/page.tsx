@@ -3,6 +3,8 @@ import { Box, Breadcrumbs, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import { Location } from "../../../definitions/types/Location"
 import ShiftsTable from "@/components/tables/AllShiftsTable";
+import { Employee } from "@/definitions/types/Employee";
+import { UserBox } from "@/components/general/UserBox";
 
 const locations: Location[] = [{ id: 0, name: "Glek", adress: "Dierhagener str. 81", priceForHour: 4, priceMinimal: 20 },
 { id: 1, name: "Kuku", adress: "Greweveg 2", priceForHour: 4, priceMinimal: 20 }]
@@ -16,6 +18,8 @@ export default function Shifts() {
 
     if (locations.length > 0) {
         return (
+            <Stack direction="row" gap={4}>
+            <UserBox pageType="shifts"/>
             <Stack sx={{ width: "100%" }}>
                 <Box sx={{ height: "24px", pl: 2 }}>
                     <Breadcrumbs aria-label="breadcrumb">
@@ -41,6 +45,8 @@ export default function Shifts() {
                         <ShiftsTable locationId={0}/>
                     </Stack>
             </Stack>
+        </Stack>
+           
         )
     }
     return (<Typography>Loading</Typography>);
