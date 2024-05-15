@@ -5,25 +5,8 @@ import FaceIcon from '@mui/icons-material/Face';
 
 type Page = "currentShift" | "cashbox" | "shifts" | "visits" | "locations"
 
-function getPageTypeFromURL(): Page {
-    const pathname = window.location.pathname; 
-  
-    if (pathname.includes('/dashboard/current-shift')) {
-      return "currentShift";
-    } else if (pathname.includes('/dashboard/cashbox')) {
-      return "cashbox";
-    } else if (pathname.includes('/dashboard/shifts')) {
-      return "shifts";
-    } else if (pathname.includes('/dashboard/visits')) {
-      return "visits";
-    } else if (pathname.includes('/dashboard/locations')) {
-      return "locations";
-    }
-    return "currentShift"; 
-  }
-
 export function UserBox(props: { user: Employee}) {
-    const pageType = getPageTypeFromURL();
+    let pageType = "currentShift"
     return (
         <Stack gap={1} sx={{ width: 260, mt: 3, p: "22px", height: "fit-content", borderRadius: 5, borderWidth: 1.5, borderStyle: "solid", borderColor: "primary.dark" }}>
             <Stack alignItems="center" direction="row" gap={1}>
