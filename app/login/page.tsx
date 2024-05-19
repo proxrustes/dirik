@@ -3,7 +3,6 @@ import { EmployeeBasic } from "@/definitions/types/Employee";
 import { sign } from "@/lib/jwtUtils";
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useReducer } from "react";
-import { cookies } from "next/headers"
 import { useRouter } from "next/router";
 
 enum FormActionType {
@@ -53,7 +52,6 @@ export default function Login() {
                 },
                 KEY
             )
-            cookies().set("currentUser", jwt)
             router.push('/dashboard')
             return { error: false }
         }

@@ -1,5 +1,4 @@
 import { SignJWT, decodeJwt, jwtVerify } from "jose"
-import { cookies } from "next/headers"
 import { EmployeeBasic } from "@/definitions/types/Employee"
 import { Token } from "@/definitions/types/Token"
 
@@ -37,7 +36,7 @@ export async function parse(token: string) {
         return null
     }
 }
-
+/*
 export function getUserFromJWT() {
     const token = cookies().get("currentUser")?.value
     if (!token) {
@@ -48,4 +47,4 @@ export function getUserFromJWT() {
         } as EmployeeBasic
     }
     return decodeJwt(token) as EmployeeBasic
-}
+}*/
