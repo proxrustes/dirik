@@ -1,6 +1,10 @@
 "use client"
+import { EmployeeBasic } from "@/definitions/types/Employee";
+import { sign } from "@/lib/jwtUtils";
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useReducer } from "react";
+import { cookies } from "next/headers"
+import { useRouter } from "next/router";
 
 enum FormActionType {
     SET_EMAIL = 'SET_EMAIL',
@@ -31,11 +35,29 @@ export default function Login() {
         password: ''
     };
     const [state, dispatch] = useReducer(formReducer, initialState);
+    const router = useRouter();
 
-    function login() {
-       
+    async function login() {
+        const KEY = process.env.JWT_KEY
+        const token = state.password?.toString()
+        if (!KEY || token === undefined) {
+            return { error: true }
+        }
+        const db_user: EmployeeBasic = { id: 0, fullName: "Maria", location_id: 0 };
+        if (db_user) {
+            const jwt = await sign(
+                {
+                    id: db_user.id,
+                    fullName: db_user.fullName,
+                    location_id: db_user.location_id
+                },
+                KEY
+            )
+            cookies().set("currentUser", jwt)
+            router.push('/dashboard')
+            return { error: false }
+        }
     }
-
     return (
         <>
             <Stack direction="row" gap={20} justifyContent="center" sx={{ mt: "20vh", color: "white" }}>
