@@ -9,10 +9,8 @@ import { TokenUser } from "@/definitions/types/Token";
 export async function login(prevState: any, formData: FormData) {
     await delay(100)
     const KEY = process.env.JWT_KEY
-    console.log(formData)
     const password = formData.get("password")?.toString()
     const email = formData.get("email")?.toString()
-    console.log(password, email)
     if (!KEY || password === undefined) {
         return { error: true }
     }

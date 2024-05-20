@@ -36,12 +36,9 @@ export function LoginBox() {
     return (
         <Box component="form" action={formAction} noValidate sx={{ mt: 5 }}>
             <Stack gap={1} justifyContent="center" >
-                <FormControl size="small" sx={{ width: { xl: 400, md: 350 } }}>
-
                     <TextField size="small" name="email" value={form.email} onChange={e => dispatch({ type: FormActionType.SET_EMAIL, payload: e.target.value })} id="email-input" label="Email" variant="outlined" ></TextField>
                     <TextField size="small"  name="password"value={form.password} onChange={e => dispatch({ type: FormActionType.SET_PASSWORD, payload: e.target.value })} id="password-input" label="Password" variant="outlined"></TextField>
                     <Button type="submit" variant="contained" sx={{ mt: 2 }}>LOGIN</Button>
-                </FormControl>
             </Stack></Box>
     )
 

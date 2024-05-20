@@ -7,8 +7,6 @@ import { TokenUser } from "@/definitions/types/Token";
 type Page = "currentShift" | "cashbox" | "shifts" | "visits" | "locations"
 
 export function UserBox(props: { user: TokenUser, pageType: Page }) {
-    console.log(props)
-
     return (
         <Stack gap={1} sx={{ width: 260, mt: 3, p: "22px", height: "fit-content", borderRadius: 5, borderWidth: 1.5, borderStyle: "solid", borderColor: "primary.dark" }}>
             <Stack alignItems="center" direction="row" gap={1}>
