@@ -1,8 +1,8 @@
 import { SignJWT, decodeJwt, jwtVerify } from "jose"
-import { EmployeeBasic } from "@/definitions/types/Employee"
-import { Token } from "@/definitions/types/Token"
+import { TokenUser } from "@/definitions/types/Token"
+import { cookies } from "next/headers"
 
-export async function sign(payload: Token, secret: string): Promise<string> {
+export async function sign(payload: TokenUser, secret: string): Promise<string> {
     const iat = Math.floor(Date.now() / 1000)
     const exp = iat + 60 * 60 // one hour
 
@@ -28,7 +28,7 @@ export async function verify(token: string) {
 export async function parse(token: string) {
     try {
         if (token && (await verify(token))) {
-            const user = decodeJwt(token) as EmployeeBasic
+            const user = decodeJwt(token) as TokenUser
             return user
         }
         return null
@@ -36,15 +36,16 @@ export async function parse(token: string) {
         return null
     }
 }
-/*
+
 export function getUserFromJWT() {
     const token = cookies().get("currentUser")?.value
     if (!token) {
         return {
             id: 0,
             fullName: "",
+            position: "",
             location_id: 0,
-        } as EmployeeBasic
+        } as TokenUser
     }
-    return decodeJwt(token) as EmployeeBasic
-}*/
+    return decodeJwt(token) as TokenUser
+}

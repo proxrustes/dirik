@@ -13,9 +13,3 @@ export type Employee = {
     passportNumber: string,
     INN: string
 }
-
-export type EmployeeBasic = {
-    id: number
-    fullName: string,
-    location_id: number
-}
