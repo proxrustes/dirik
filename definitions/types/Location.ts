@@ -1,4 +1,4 @@
-export type Location = {
+export type CafeLocation = {
     id: number,
     name: string,
     adress: string,

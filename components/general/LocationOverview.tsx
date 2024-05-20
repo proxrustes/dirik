@@ -2,7 +2,7 @@ import { Button, Stack, Typography } from "@mui/material";
 import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined';
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import { ReactNode } from "react";
-import { Location } from "@/definitions/types/Location";
+import { CafeLocation } from "@/definitions/types/Location";
 
 export function ShiftStatsIcon(props: { icon: ReactNode, title: string, display: string | number }) {
     return (
@@ -13,7 +13,7 @@ export function ShiftStatsIcon(props: { icon: ReactNode, title: string, display:
         </Stack>
     );
 }
-export function LocationOverviewBox(props: { location: Location }) {
+export function LocationOverviewBox(props: { location: CafeLocation }) {
     return (
         <Stack gap={4} sx={{ p: "22px", height: "fit-content", borderRadius: 5, borderWidth: 1.5, borderStyle: "solid", borderColor: "primary.dark" }}>
             <Stack alignItems="center"> <Typography sx={{ fontWeight: 800, fontSize: 20 }}>Location Overview</Typography>
