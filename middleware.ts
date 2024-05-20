@@ -31,11 +31,6 @@ export async function middleware(req: NextRequest) {
     return redirectWithDelete(req, "/login")
   }
 
-  if (req.nextUrl.pathname === "/login") {
-    req.nextUrl.pathname = "/profile"
-    return NextResponse.redirect(req.nextUrl)
-  }
-
   if (req.nextUrl.pathname === "/dashboard") {
     req.nextUrl.pathname = "/dashboard/current-shift"
     return NextResponse.redirect(req.nextUrl)
