@@ -6,15 +6,37 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { TablePagination } from '@mui/material';
+import { Shift } from '@/definitions/types/Shift';
+import { useEffect, useState } from 'react';
 
-const shifts = [
-  { id: 1, creatorId: 0, locationId: 0, location: "Johanisstr. 34", startDate: "29/09/2024", availableCash: 110, totalCash: 4550, totalMoney: 9000 },
-  { id: 2, creatorId: 1, locationId: 1, location: "Greweveg 2", startDate: "01/10/2024", availableCash: 150, totalCash: 5000, totalMoney: 9500 },
-];
+export default function ShiftsTable(props: { locationId: number }) {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [shifts, setShifts] = useState<Shift[]>([])
 
-export default function ShiftsTable(props: {locationId: number}) {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/shifts', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            "Access-Control-Allow-Origin": "*"
+          },
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const res = await response.json()
+        const data: Shift[] = res;
+        setShifts(data)
+      } catch { }
+
+
+    };
+
+    fetchLocations();
+  }, []);
 
   return (
     <TableContainer sx={{ minWidth: 620, width: "100%", mt: 2 }}>

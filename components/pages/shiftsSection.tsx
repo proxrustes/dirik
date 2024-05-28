@@ -61,7 +61,7 @@ export function ShiftsSection() {
                 <Stack direction="row" justifyContent="space-between">
                     <Typography sx={{ fontWeight: 800, fontSize: 20 }}>Shifts</Typography>
                 </Stack>
-                <ShiftsTable locationId={0} />
+                <ShiftsTable locationId={currentLocation?.id ?? 0} />
             </Stack>
         </Stack>
     )
