@@ -18,7 +18,7 @@ export default function VisitsTable(props: { locationId: number }) {
   const [visits, setVisits] = useState<Visit[]>([])
 
   useEffect(() => {
-    const fetchLocations = async () => {
+    const fetchVisits = async () => {
       try {
         const response = await fetch('http://localhost:3000/visits', {
           method: 'GET',
@@ -38,7 +38,7 @@ export default function VisitsTable(props: { locationId: number }) {
 
     };
 
-    fetchLocations();
+    fetchVisits();
   }, []);
   return (
     <TableContainer sx={{ minWidth: 620, width: "100%", mt: 2 }}>

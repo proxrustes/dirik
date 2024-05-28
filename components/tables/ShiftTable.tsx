@@ -11,21 +11,39 @@ import CloseIcon from '@mui/icons-material/Close';
 import TablePagination from '@mui/material/TablePagination';
 import { Visit } from '@/definitions/types/Visit';
 import AlbumIcon from '@mui/icons-material/Album';
+import { useEffect, useState } from 'react';
+import { Shift } from '@/definitions/types/Shift';
 
-const visits: Visit[] = [
-  { id: 0, shiftId: 0, isPriceFixed: true, price: 200, resultPrice: 300, cash: 100, terminal: 200, totemName: 'Visit 1', clientsAmount: 5, startAt: '10:00 AM', endAt: '11:00 AM' },
-  { id: 1, shiftId: 0, isPriceFixed: true, price: 200, resultPrice: 300, cash: 100, terminal: 200, totemName: 'Visit 2', clientsAmount: 8, startAt: '12:00 PM', endAt: '01:00 PM' },
-  { id: 2, shiftId: 0, isPriceFixed: true, price: 200, resultPrice: 300, cash: 100, terminal: 200, totemName: 'Visit 3', clientsAmount: 3, startAt: '02:00 PM' },
-  { id: 3, shiftId: 0, isPriceFixed: true, price: 200, resultPrice: 300, cash: 100, terminal: 200, totemName: 'Visit 1', clientsAmount: 5, startAt: '10:00 AM' },
-  { id: 4, shiftId: 0, isPriceFixed: true, price: 200, resultPrice: 300, cash: 100, terminal: 200, totemName: 'Visit 2', clientsAmount: 8, startAt: '12:00 PM', endAt: '01:00 PM' },
-  { id: 5, shiftId: 0, isPriceFixed: true, price: 200, resultPrice: 300, cash: 100, terminal: 200, totemName: 'Visit 3', clientsAmount: 3, startAt: '02:00 PM', endAt: '03:00 PM' },
-  { id: 6, shiftId: 0, isPriceFixed: true, price: 200, resultPrice: 300, cash: 100, terminal: 200, totemName: 'Visit 1', clientsAmount: 5, startAt: '10:00 AM', endAt: '11:00 AM' },
-  { id: 7, shiftId: 0, isPriceFixed: true, price: 200, resultPrice: 300, cash: 100, terminal: 200, totemName: 'Visit 2', clientsAmount: 8, startAt: '12:00 PM' },
-  { id: 8, shiftId: 0, isPriceFixed: true, price: 200, resultPrice: 300, cash: 100, terminal: 200, totemName: 'Visit 3', clientsAmount: 3, startAt: '02:00 PM', endAt: '03:00 PM' },
-];
-export default function CurrentShiftTable(props: { financeView: boolean, locationId: number }) {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+export default function CurrentShiftTable(props: { financeView: Boolean, shift: Shift }) {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [visits, setVisits] = useState<Visit[]>([])
+
+  useEffect(() => {
+    const fetchVisits = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/visits', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            "Access-Control-Allow-Origin": "*"
+          },
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const res = await response.json()
+        const data: Visit[] = res;
+        console.log(data, props.shift?.id)
+        const visits = data.filter(visit => visit.shiftId === props.shift?.id);
+        setVisits(visits)
+      } catch { }
+
+
+    };
+
+    fetchVisits();
+  }, []);
 
   const renderStandardView = () => (
     <TableContainer sx={{ minWidth: 620, width: "100%", mt: 2 }}>
