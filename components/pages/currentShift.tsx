@@ -6,19 +6,37 @@ import CurrentShiftTable from "../tables/ShiftTable"
 import { CafeLocation } from "../../definitions/types/Location"
 import { useState } from "react"
 import { Shift } from "@/definitions/types/Shift"
-
-const mockShift: Shift = {
-    id: 1, locationId: 0, creatorId: 0, location: "Johanisstr. 34", startDate: "29/09/2024",
-    availableCash: 110,
-    totalCash: 4550,
-    totalMoney: 9000
-}
+import { useEffect } from "react"
 
 export function CurrentShiftSection() {
-    const location: CafeLocation = { id: 0, name: "Glek", adress: "Dierhagener str. 81", priceForHour: 4, priceMinimal: 20 }
-    const [currentLocation, setLocation] = useState(location)
+    
+    const [currentLocation, setLocation] = useState<CafeLocation>();
     const [financeView, setFinanceView] = useState(false)
+    const [currentShift, setShift] = useState<Shift>();
 
+    useEffect(() => {
+        const fetchShift = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/shifts', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "Access-Control-Allow-Origin": "*"
+                    },
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const res = await response.json()
+                const data: Shift[] = res;
+                const openShift = data.filter(shift => shift.endDate === null);
+                setShift(openShift[0])
+            } catch { }
+
+
+        }
+        fetchShift();
+    }, []);
 
     return (
         <Stack sx={{ width: "100%", mt:3 }} gap={4} direction="row" justifyContent="space-between">
@@ -36,9 +54,9 @@ export function CurrentShiftSection() {
                     />
 
                 </Stack>
-                <CurrentShiftTable financeView={financeView} locationId={currentLocation.id} />
+                <CurrentShiftTable financeView={financeView} locationId={currentLocation?.id ?? 0} />
             </Stack>
-            <ShiftOverviewBox shift={mockShift} />
+            <ShiftOverviewBox shift={currentShift} />
         </Stack>
     )
 }

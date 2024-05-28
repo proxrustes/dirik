@@ -16,7 +16,10 @@ export function ShiftStatsIcon(props: { icon: ReactNode, title: string, display:
         </Stack>
     );
 }
-export function ShiftOverviewBox(props: { shift: Shift }) {
+export function ShiftOverviewBox(props: { shift: Shift | undefined }) {
+    if (props.shift === undefined){
+        return <Typography>error</Typography>
+    }
     return (
         <Stack gap={4} sx={{ p: "22px", height: "fit-content", borderRadius: 5,  borderWidth: 1.5, borderStyle: "solid", borderColor: "primary.dark" }}>
             <Stack alignItems="center"> <Typography sx={{ fontWeight: 800, fontSize: 20 }}>Shift Overview</Typography>

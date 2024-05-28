@@ -10,23 +10,36 @@ import { Button, IconButton, Stack, TablePagination, Tooltip } from '@mui/materi
 import AlbumIcon from '@mui/icons-material/Album';
 import CloseIcon from '@mui/icons-material/Close';
 import { Visit } from '@/definitions/types/Visit';
-
-const visits: Visit[] = [
-  { id: 0, shiftId: 0, isPriceFixed: true, price: 200, resultPrice: 300, cash: 100, terminal: 200, totemName: 'Visit 1', clientsAmount: 5, startAt: '10:00 AM', endAt: '11:00 AM' },
-  { id: 1, shiftId: 0, isPriceFixed: true, price: 200, resultPrice: 300, cash: 100, terminal: 200, totemName: 'Visit 2', clientsAmount: 8, startAt: '12:00 PM', endAt: '01:00 PM' },
-  { id: 2, shiftId: 0, isPriceFixed: true, price: 200, resultPrice: 300, cash: 100, terminal: 200, totemName: 'Visit 3', clientsAmount: 3, startAt: '02:00 PM' },
-  { id: 3, shiftId: 0, isPriceFixed: true, price: 200, resultPrice: 300, cash: 100, terminal: 200, totemName: 'Visit 1', clientsAmount: 5, startAt: '10:00 AM' },
-  { id: 4, shiftId: 0, isPriceFixed: true, price: 200, resultPrice: 300, cash: 100, terminal: 200, totemName: 'Visit 2', clientsAmount: 8, startAt: '12:00 PM', endAt: '01:00 PM' },
-  { id: 5, shiftId: 0, isPriceFixed: true, price: 200, resultPrice: 300, cash: 100, terminal: 200, totemName: 'Visit 3', clientsAmount: 3, startAt: '02:00 PM', endAt: '03:00 PM' },
-  { id: 6, shiftId: 0, isPriceFixed: true, price: 200, resultPrice: 300, cash: 100, terminal: 200, totemName: 'Visit 1', clientsAmount: 5, startAt: '10:00 AM', endAt: '11:00 AM' },
-  { id: 7, shiftId: 0, isPriceFixed: true, price: 200, resultPrice: 300, cash: 100, terminal: 200, totemName: 'Visit 2', clientsAmount: 8, startAt: '12:00 PM' },
-  { id: 8, shiftId: 0, isPriceFixed: true, price: 200, resultPrice: 300, cash: 100, terminal: 200, totemName: 'Visit 3', clientsAmount: 3, startAt: '02:00 PM', endAt: '03:00 PM' },
-];
+import { useEffect, useState } from 'react';
 
 export default function VisitsTable(props: { locationId: number }) {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [visits, setVisits] = useState<Visit[]>([])
 
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/visits', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            "Access-Control-Allow-Origin": "*"
+          },
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const res = await response.json()
+        const data: Visit[] = res;
+        setVisits(data)
+      } catch { }
+
+
+    };
+
+    fetchLocations();
+  }, []);
   return (
     <TableContainer sx={{ minWidth: 620, width: "100%", mt: 2 }}>
       <Table size="small" aria-label="simple table">

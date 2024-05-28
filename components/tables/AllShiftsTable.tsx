@@ -15,7 +15,7 @@ export default function ShiftsTable(props: { locationId: number }) {
   const [shifts, setShifts] = useState<Shift[]>([])
 
   useEffect(() => {
-    const fetchLocations = async () => {
+    const fetchShifts = async () => {
       try {
         const response = await fetch('http://localhost:3000/shifts', {
           method: 'GET',
@@ -35,7 +35,7 @@ export default function ShiftsTable(props: { locationId: number }) {
 
     };
 
-    fetchLocations();
+    fetchShifts();
   }, []);
 
   return (
