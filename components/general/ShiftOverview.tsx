@@ -5,6 +5,7 @@ import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
 import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined';
 import {  ReactNode } from "react";
+import { AddVisitPopup } from "./AddVisit";
 
 export function ShiftStatsIcon(props: { icon: ReactNode, title: string, display: string | number }) {
     return (
@@ -34,7 +35,7 @@ export function ShiftOverviewBox(props: { shift: Shift }) {
             </Stack>
 
             <Stack gap={2}>
-                <Button variant="contained" sx={{fontWeight: 600}} color="primary">Add Visit</Button>
+                <AddVisitPopup/>
                 <Button color="primary" sx={{fontWeight: 600}}>Close Shift</Button>
             </Stack>
 
