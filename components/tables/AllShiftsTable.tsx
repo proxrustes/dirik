@@ -44,7 +44,6 @@ export default function ShiftsTable(props: { locationId: number }) {
         <TableHead>
           <TableRow>
             <TableCell sx={{ fontWeight: 600 }}>Shift ID</TableCell>
-            <TableCell align='center' sx={{ fontWeight: 600 }}>Location</TableCell>
             <TableCell align='center' sx={{ fontWeight: 600 }}>Start Date</TableCell>
             <TableCell align='center' sx={{ fontWeight: 600 }}>Available Cash</TableCell>
             <TableCell align='center' sx={{ fontWeight: 600 }}>Total Cash</TableCell>
@@ -60,7 +59,6 @@ export default function ShiftsTable(props: { locationId: number }) {
                 <TableCell component="th" scope="row">
                   {shift.id}
                 </TableCell>
-                <TableCell align='center'>{shift.location}</TableCell>
                 <TableCell align='center'>{shift.startDate}</TableCell>
                 <TableCell align='center'>{shift.availableCash}</TableCell>
                 <TableCell align='center'>{shift.totalCash}</TableCell>
