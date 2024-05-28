@@ -1,17 +1,51 @@
 "use client"
 
-import { CafeLocation } from "@/definitions/types/Location";
-import { TokenUser } from "@/definitions/types/Token";
-import { Stack, FormControl, InputLabel, Select, MenuItem, List, ListItem, ListItemText, Button, SelectChangeEvent } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Stack, FormControl, InputLabel, Select, MenuItem, List, ListItem, ListItemText, Button, SelectChangeEvent, Snackbar, Alert } from "@mui/material";
 import Link from "next/link";
-import { useState } from "react";
+
+interface CafeLocation {
+    id: number;
+    name: string;
+}
+
+interface TokenUser {
+    id: number;
+    fullName: string;
+    locationId: number;
+}
 
 export function ManageLocationsSection() {
-  
-    const [firstLocation, setFirstLocation] = useState<number>(locations[0].id);
-    const [secondLocation, setSecondLocation] = useState<number>(locations[1].id ?? locations[0].id);
+    const [locations, setLocations] = useState<CafeLocation[]>([]);
+    const [employees, setEmployees] = useState<TokenUser[]>([]);
+    const [firstLocation, setFirstLocation] = useState<number>(0);
+    const [secondLocation, setSecondLocation] = useState<number>(0);
+    const [employeeList, setEmployeeList] = useState<TokenUser[]>([]);
+    const [error, setError] = useState<string | null>(null);
 
-    const [employeeList, setEmployeeList] = useState<TokenUser[]>(employees);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const locationsResponse = await fetch('http://localhost:3000/locations');
+                if (!locationsResponse.ok) throw new Error('Failed to fetch locations');
+                const locationsData = await locationsResponse.json();
+                setLocations(locationsData);
+
+                const employeesResponse = await fetch('http://localhost:3000/employees');
+                if (!employeesResponse.ok) throw new Error('Failed to fetch employees');
+                const employeesData = await employeesResponse.json();
+                setEmployees(employeesData);
+
+                setFirstLocation(locationsData[0]?.id || 0);
+                setSecondLocation(locationsData[1]?.id || locationsData[0]?.id || 0);
+                setEmployeeList(employeesData);
+            } catch (error: any) {
+                setError(error.message);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const handleFirstLocationChange = (event: SelectChangeEvent<number>) => {
         setFirstLocation(Number(event.target.value));
@@ -21,16 +55,29 @@ export function ManageLocationsSection() {
         setSecondLocation(Number(event.target.value));
     };
 
-    const shiftEmployee = (employeeId: number) => {
-        setEmployeeList(currentEmployees => currentEmployees.map(employee => {
-            if (employee.id === employeeId) {
-                return {
-                    ...employee,
-                    locationId: employee.locationId === firstLocation ? secondLocation : firstLocation
-                };
-            }
-            return employee;
-        }));
+    const shiftEmployee = async (employeeId: number) => {
+        const updatedLocationId = employeeList.find(emp => emp.id === employeeId)?.locationId === firstLocation ? secondLocation : firstLocation;
+
+        try {
+            const response = await fetch(`http://localhost:3000/employees/${employeeId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ locationId: updatedLocationId })
+            });
+
+            if (!response.ok) throw new Error('Failed to update employee');
+
+            const updatedEmployee = await response.json();
+            setEmployeeList(currentEmployees =>
+                currentEmployees.map(employee =>
+                    employee.id === employeeId ? updatedEmployee : employee
+                )
+            );
+        } catch (error: any) {
+            setError(error.message);
+        }
     };
 
     return (
@@ -90,6 +137,14 @@ export function ManageLocationsSection() {
                     </List>
                 </Stack>
             </Stack>
+
+            {error && (
+                <Snackbar open={true} autoHideDuration={6000} onClose={() => setError(null)}>
+                    <Alert onClose={() => setError(null)} severity="error" sx={{ width: '100%' }}>
+                        {error}
+                    </Alert>
+                </Snackbar>
+            )}
         </Stack>
     )
 }

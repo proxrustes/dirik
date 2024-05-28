@@ -1,11 +1,9 @@
 "use client"
 
-import { Employee } from "@/definitions/types/Employee";
 import { CafeLocation } from "@/definitions/types/Location";
 import { Button, Dialog, DialogTitle, TextField, MenuItem } from "@mui/material";
 import { useState, useEffect } from "react";
 
-// Fetch locations from API
 const fetchLocations = async () => {
     const response = await fetch('http://localhost:3000/locations', {
         method: 'GET',
