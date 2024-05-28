@@ -1,6 +1,7 @@
 "use client"
-import { Button, MenuItem, Stack, TextField, Typography } from "@mui/material";
-import { useReducer } from "react";
+import { Button, MenuItem, Stack, TextField, Typography, Snackbar, Alert } from "@mui/material";
+import { redirect } from "next/dist/server/api-utils";
+import { useReducer, useState, useEffect } from "react";
 
 enum FormActionType {
     SET_NAME = 'SET_NAME',
@@ -11,10 +12,12 @@ enum FormActionType {
     SET_SALARY_FIXED = 'SET_SALARY_FIXED',
     SET_SALARY_PERCENT = 'SET_SALARY_PERCENT'
 }
+
 interface FormAction {
     type: FormActionType;
     payload: string | number;
 }
+
 interface FormState {
     fullName: string;
     email: string;
@@ -22,8 +25,9 @@ interface FormState {
     confirmPassword: string;
     location: string;
     salaryFixed: number;
-    salaryPercent: number;
+    salarayPercent: number;
 }
+
 function formReducer(state: FormState, action: FormAction): FormState {
     switch (action.type) {
         case FormActionType.SET_NAME:
@@ -39,11 +43,26 @@ function formReducer(state: FormState, action: FormAction): FormState {
         case FormActionType.SET_SALARY_FIXED:
             return { ...state, salaryFixed: Number(action.payload) };
         case FormActionType.SET_SALARY_PERCENT:
-            return { ...state, salaryPercent: Number(action.payload) };
+            return { ...state, salarayPercent: Number(action.payload) };
         default:
             return state;
     }
 }
+
+const fetchLocations = async () => {
+    const response = await fetch('http://localhost:3000/locations', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            "Access-Control-Allow-Origin": "*"
+        },
+    });
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const res = await response.json();
+    return res;
+};
 
 export default function Register() {
     const initialState: FormState = {
@@ -53,19 +72,62 @@ export default function Register() {
         confirmPassword: '',
         location: '',
         salaryFixed: 0,
-        salaryPercent: 0
+        salarayPercent: 0
     };
+
     const [state, dispatch] = useReducer(formReducer, initialState);
+    const [locations, setLocations] = useState<{ value: string; label: string }[]>([]);
+    const [error, setError] = useState<string | null>(null);
 
-    function register() {
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const locations = await fetchLocations();
+                setLocations(locations.map((loc: any) => ({ value: loc.id.toString(), label: loc.name })));
+            } catch (error: any) {
+                setError(error.message);
+            }
+        };
+        fetchData();
+    }, []);
+
+    async function register() {
+        // Fill missing fields with fake data
+        const employeeData = {
+            fullName: state.fullName || 'John Doe',
+            email: state.email || 'john.doe@example.com',
+            password: state.password || 'password123',
+            confirmPassword: state.confirmPassword || 'password123',
+            locationId: parseInt(state.location) || (locations[0]?.value ? parseInt(locations[0].value) : 0),
+            salaryFixed: state.salaryFixed || 4000,
+            salarayPercent: state.salarayPercent || 5,
+            phone: '1234567890',
+            homeAdress: '123 Fake Street',
+            availableSalary: 0,
+            passportNumber: 'A1234567',
+            INN: '1234567890',
+            position: 'Employee'
+        };
+
+        try {
+            const response = await fetch('http://localhost:3000/employees', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Access-Control-Allow-Origin": "*"
+                },
+                body: JSON.stringify(employeeData)
+            });
+
+            if (!response.ok) {
+                const responseData = await response.json();
+                throw new Error(responseData.error || `HTTP error! status: ${response.status}`);
+            }
+
+        } catch (error: any) {
+            setError(error.message);
+        }
     }
-
-    const locations = [
-        { value: 'USD', label: '$' },
-        { value: 'EUR', label: '€' },
-        { value: 'BTC', label: '฿' },
-        { value: 'JPY', label: '¥' },
-    ];
 
     return (
         <>
@@ -75,8 +137,6 @@ export default function Register() {
                         Welcome to
                         <span style={{ color: "#9CA3DB" }}> Dirik!</span>
                     </Typography>
-
-
                     <Typography sx={{ fontWeight: 600 }}>You can register a new employee here</Typography>
                 </Stack>
                 <Stack gap={2} justifyContent="center">
@@ -102,12 +162,20 @@ export default function Register() {
                                 ))}
                             </TextField>
                             <TextField size="small" id="salary-fixed-input" label="Salary fixed" type="number" value={state.salaryFixed} onChange={e => dispatch({ type: FormActionType.SET_SALARY_FIXED, payload: e.target.value })} variant="outlined" />
-                            <TextField size="small" id="salary-percent-input" label="Salary percent" type="number" value={state.salaryPercent} onChange={e => dispatch({ type: FormActionType.SET_SALARY_PERCENT, payload: e.target.value })} variant="outlined" />
+                            <TextField size="small" id="salary-percent-input" label="Salary percent" type="number" value={state.salarayPercent} onChange={e => dispatch({ type: FormActionType.SET_SALARY_PERCENT, payload: e.target.value })} variant="outlined" />
                         </Stack>
                     </Stack>
                     <Button variant="contained" sx={{ mt: 1 }} onClick={register}>REGISTER NEW EMPLOYEE</Button>
                 </Stack>
             </Stack>
+
+            {error && (
+                <Snackbar open={true} autoHideDuration={6000} onClose={() => setError(null)}>
+                    <Alert onClose={() => setError(null)} severity="error" sx={{ width: '100%' }}>
+                        {error}
+                    </Alert>
+                </Snackbar>
+            )}
         </>
     );
 }
