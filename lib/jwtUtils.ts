@@ -44,7 +44,7 @@ export function getUserFromJWT() {
             id: 0,
             fullName: "",
             position: "",
-            location_id: 0,
+            locationId: 0,
         } as TokenUser
     }
     return decodeJwt(token) as TokenUser

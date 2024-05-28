@@ -3,6 +3,7 @@ import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined';
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import { ReactNode } from "react";
 import { CafeLocation } from "@/definitions/types/Location";
+import { AddEmployeePopup } from "./AddEmployee";
 
 export function ShiftStatsIcon(props: { icon: ReactNode, title: string, display: string | number }) {
     return (
@@ -29,7 +30,7 @@ export function LocationOverviewBox(props: { location: CafeLocation }) {
             </Stack>
 
             <Stack gap={2}>
-                <Button variant="contained" sx={{ fontWeight: 800 }} href="/register">Add employee</Button>
+                <AddEmployeePopup/>
                 <Button variant="contained" sx={{ fontWeight: 800 }} href="locations/manage">manage locations</Button>
             </Stack>
 

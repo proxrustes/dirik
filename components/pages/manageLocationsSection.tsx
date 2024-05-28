@@ -7,18 +7,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 export function ManageLocationsSection() {
-    const locations: CafeLocation[] = [
-        { id: 0, name: "Glek", adress: "Dierhagener str. 81", priceForHour: 4, priceMinimal: 10 },
-        { id: 1, name: "Kuku", adress: "Greweveg 2", priceForHour: 5, priceMinimal: 20 }
-    ];
-
-    const employees: TokenUser[] = [
-        { id: 0, fullName: "Alice", position: "admin", location_id: 0 },
-        { id: 1, fullName: "Bob", position: "janitor", location_id: 0 },
-        { id: 2, fullName: "Charlie", position: "cook", location_id: 1 },
-        { id: 3, fullName: "Diana", position: "admin", location_id: 1 }
-    ];
-
+  
     const [firstLocation, setFirstLocation] = useState<number>(locations[0].id);
     const [secondLocation, setSecondLocation] = useState<number>(locations[1].id ?? locations[0].id);
 
@@ -37,7 +26,7 @@ export function ManageLocationsSection() {
             if (employee.id === employeeId) {
                 return {
                     ...employee,
-                    location_id: employee.location_id === firstLocation ? secondLocation : firstLocation
+                    locationId: employee.locationId === firstLocation ? secondLocation : firstLocation
                 };
             }
             return employee;
@@ -68,7 +57,7 @@ export function ManageLocationsSection() {
                         </Select>
                     </FormControl>
                     <List>
-                        {employeeList.filter(emp => emp.location_id === firstLocation).map(employee => (
+                        {employeeList.filter(emp => emp.locationId === firstLocation).map(employee => (
                             <ListItem key={employee.id}>
                                 <ListItemText primary={employee.fullName} />
                                 <Button variant="contained" color="primary" onClick={() => shiftEmployee(employee.id)}>→</Button>
@@ -92,7 +81,7 @@ export function ManageLocationsSection() {
                         </Select>
                     </FormControl>
                     <List>
-                        {employeeList.filter(emp => emp.location_id === secondLocation).map(employee => (
+                        {employeeList.filter(emp => emp.locationId === secondLocation).map(employee => (
                             <ListItem key={employee.id}>
                                 <ListItemText primary={employee.fullName} />
                                 <Button variant="contained" color="primary" onClick={() => shiftEmployee(employee.id)}>←</Button>

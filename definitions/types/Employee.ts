@@ -5,7 +5,7 @@ export type Employee = {
     phone: string,
     email: string,
     homeAdress: string,
-    location_id: number,
+    locationId: number,
     location: string,
     salaryFixed: number,
     salarayPercent: number,

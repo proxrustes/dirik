@@ -14,14 +14,14 @@ export async function login(prevState: any, formData: FormData) {
     if (!KEY || password === undefined) {
         return { error: true }
     }
-    const db_user: TokenUser = { id: 0, fullName: "Maria", position: "admin", location_id: 0 };
+    const db_user: TokenUser = { id: 0, fullName: "Maria", position: "admin", locationId: 0 };
     if (db_user) {
         const jwt = await sign(
             {
                 id: db_user.id,
                 fullName: db_user.fullName,
                 position: db_user.position,
-                location_id: db_user.location_id
+                locationId: db_user.locationId
             },
             KEY
         )
