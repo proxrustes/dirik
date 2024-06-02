@@ -12,7 +12,7 @@ export function LocationsSection() {
     useEffect(() => {
         const fetchLocations = async () => {
             try {
-                const response = await fetch('http://localhost:3000/locations', {
+                const response = await fetch('http://164.90.168.113/locations', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

@@ -19,7 +19,7 @@ export default function EmployeesTable(props: { locationId: number }) {
   useEffect(() => {
       const fetchLocations = async () => {
           try {
-              const response = await fetch('http://localhost:3000/employees', {
+              const response = await fetch('http://164.90.168.113/employees', {
                   method: 'GET',
                   headers: {
                       'Content-Type': 'application/json',

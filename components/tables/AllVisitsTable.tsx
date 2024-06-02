@@ -20,7 +20,7 @@ export default function VisitsTable(props: { locationId: number }) {
   useEffect(() => {
     const fetchVisits = async () => {
       try {
-        const response = await fetch('http://localhost:3000/visits', {
+        const response = await fetch('http://164.90.168.113/visits', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -68,11 +68,6 @@ export default function VisitsTable(props: { locationId: number }) {
                 <TableCell align='center'>{visit.endAt ?? <Button variant='outlined' sx={{ fontSize: "10px", padding: "2px 5px" }}>close</Button>}</TableCell>
                 {visit.endAt ? <TableCell align='center' />
                   : <TableCell align='center'>
-                    <Tooltip title="Edit visit">
-                      <IconButton>
-                        <EditIcon sx={{ fontSize: "20px" }} />
-                      </IconButton>
-                    </Tooltip>
                     <Tooltip title="Delete">
                       <IconButton>
                         <CloseIcon sx={{ fontSize: "20px", color: "error.main" }} />
