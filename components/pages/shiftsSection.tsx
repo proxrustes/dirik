@@ -10,29 +10,27 @@ export function ShiftsSection() {
 
     useEffect(() => {
         const fetchLocations = async () => {
-            try {
-                const response = await fetch('http://164.90.168.113/locations', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        "Access-Control-Allow-Origin": "*"
-                    },
-                });
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const res = await response.json()
-                const data: CafeLocation[] = res;
-                setLocations(data);
-                setLocation(data[0])
-            } catch { }
+            const response = await fetch('http://164.90.168.113/locations', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                },
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const res = await response.json()
+            const data: CafeLocation[] = res;
+            setLocations(data);
+            setLocation(data[0])
+
 
 
         };
 
         fetchLocations();
     }, []);
-    
+
     const [currentLocation, setLocation] = useState<CafeLocation>();
 
     const handleLocationClick = (location: CafeLocation) => {

@@ -5,7 +5,6 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import EditIcon from '@mui/icons-material/Edit';
 import { Button, IconButton, Stack, TablePagination, Tooltip } from '@mui/material';
 import AlbumIcon from '@mui/icons-material/Album';
 import CloseIcon from '@mui/icons-material/Close';
@@ -15,7 +14,36 @@ import { useEffect, useState } from 'react';
 export default function VisitsTable(props: { locationId: number }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [visits, setVisits] = useState<Visit[]>([])
+  const [visits, setVisits] = useState<Visit[]>([]);
+
+  async function handleClose(visit: Visit) {
+    console.log("Close button clicked");
+    const response = await fetch(`http://164.90.168.113/visits/calculate-price`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "shiftId": visit.shiftId,
+        "startAt": visit.startAt,
+        "endAt": new Date().toISOString()
+      })
+    });
+    const res = await response.json();
+    console.log(res.price);
+    const response1 = await fetch(`http://164.90.168.113/visits/${visit.id}/close`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        resultPrice: res.price,
+        cash: res.price,
+        terminal: 0
+      })
+    });
+    console.log(await response1.json());
+  }
 
   useEffect(() => {
     const fetchVisits = async () => {
@@ -23,23 +51,23 @@ export default function VisitsTable(props: { locationId: number }) {
         const response = await fetch('http://164.90.168.113/visits', {
           method: 'GET',
           headers: {
-            'Content-Type': 'application/json',
-            "Access-Control-Allow-Origin": "*"
+            'Content-Type': 'application/json'
           },
         });
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const res = await response.json()
+        const res = await response.json();
         const data: Visit[] = res;
-        setVisits(data)
-      } catch { }
-
-
+        setVisits(data);
+      } catch (error) {
+        console.error('Error fetching visits:', error);
+      }
     };
 
     fetchVisits();
   }, []);
+
   return (
     <TableContainer sx={{ minWidth: 620, width: "100%", mt: 2 }}>
       <Table size="small" aria-label="simple table">
@@ -64,18 +92,9 @@ export default function VisitsTable(props: { locationId: number }) {
                   </Stack>
                 </TableCell>
                 <TableCell align='center'>{visit.clientsAmount}</TableCell>
-                <TableCell align='center'>{visit.startAt}</TableCell>
-                <TableCell align='center'>{visit.endAt ?? <Button variant='outlined' sx={{ fontSize: "10px", padding: "2px 5px" }}>close</Button>}</TableCell>
-                {visit.endAt ? <TableCell align='center' />
-                  : <TableCell align='center'>
-                    <Tooltip title="Delete">
-                      <IconButton>
-                        <CloseIcon sx={{ fontSize: "20px", color: "error.main" }} />
-                      </IconButton>
-                    </Tooltip>
+                <TableCell align='center'>{visit.startAt} </TableCell>
+                <TableCell align='center'>{visit.endAt ?? <Button onClick={() => handleClose(visit)} variant='outlined' sx={{ fontSize: "10px", padding: "2px 5px" }}>close</Button>}</TableCell>
 
-                  </TableCell>
-                }
               </TableRow>
             ))}
         </TableBody>

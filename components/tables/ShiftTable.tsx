@@ -18,6 +18,34 @@ export default function CurrentShiftTable(props: { financeView: Boolean, shift: 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [visits, setVisits] = useState<Visit[]>([])
+  async function handleClose(visit: Visit) {
+    console.log("Close button clicked");
+    const response = await fetch(`http://164.90.168.113/visits/calculate-price`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "shiftId": visit.shiftId,
+        "startAt": visit.startAt,
+        "endAt": new Date().toISOString()
+      })
+    });
+    const res = await response.json();
+    console.log(res.price);
+    const response1 = await fetch(`http://164.90.168.113/visits/${visit.id}/close`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        resultPrice: res.price,
+        cash: res.price,
+        terminal: 0
+      })
+    });
+    console.log(await response1.json());
+  }
 
   useEffect(() => {
     const fetchVisits = async () => {
@@ -70,11 +98,11 @@ export default function CurrentShiftTable(props: { financeView: Boolean, shift: 
                 </TableCell>
                 <TableCell align='center'>{visit.clientsAmount}</TableCell>
                 <TableCell align='center'>{visit.startAt}</TableCell>
-                <TableCell align='center'>{visit.endAt ?? <Button variant='outlined' sx={{ fontSize: "10px", padding: "2px 5px" }}>close</Button>}</TableCell>
+                <TableCell align='center'>{visit.endAt ?? <Button onClick={()=>handleClose(visit)} variant='outlined' sx={{ fontSize: "10px", padding: "2px 5px" }}>close</Button>}</TableCell>
                 {visit.endAt ? <TableCell align='center' />
                   : <TableCell align='center'>
                     <Tooltip title="Delete">
-                      <IconButton>
+                      <IconButton disabled>
                         <CloseIcon sx={{ fontSize: "20px", color: "error.main" }} />
                       </IconButton>
                     </Tooltip>

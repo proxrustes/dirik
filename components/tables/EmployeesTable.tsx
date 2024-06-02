@@ -79,7 +79,7 @@ if (employees.length == 0){
               <TableCell align='center'>{employee.availableSalary}</TableCell>
               <TableCell align='center'>
               <Tooltip title="Edit">
-                      <IconButton>
+                      <IconButton disabled>
                         <EditIcon sx={{ fontSize: "20px" }} />
                       </IconButton>
                     </Tooltip>
