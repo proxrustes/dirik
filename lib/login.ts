@@ -11,6 +11,7 @@ export async function login(prevState: any, formData: FormData) {
     const KEY = process.env.JWT_KEY
     const password = formData.get("password")?.toString()
     const email = formData.get("email")?.toString()
+    console.log(KEY, password, email)
     if (!KEY || password === undefined) {
         return { error: true }
     }

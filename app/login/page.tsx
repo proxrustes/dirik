@@ -5,7 +5,6 @@ import { LoginBox } from "@/components/LoginBox";
 export default function Login() {
 
     return (
-        <>
             <Stack direction="row" gap={20} justifyContent="center" sx={{ mt: "20vh", color: "white" }}>
                 <Stack gap={2} sx={{ width: 270 }} justifyContent="center">
                     <Typography variant="h3" sx={{ fontWeight: 600, color: "primary.dark" }}>
@@ -17,7 +16,5 @@ export default function Login() {
                 </Stack>
                <LoginBox/>
                </Stack>
-
-        </>
     );
 }
