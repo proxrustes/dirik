@@ -1,3 +1,4 @@
+"use client"
 import { Button, FormControl, Stack, TextField, Typography } from "@mui/material";
 import { LoginBox } from "@/components/LoginBox";
 
