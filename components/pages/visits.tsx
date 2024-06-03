@@ -13,7 +13,7 @@ export function VisitsSection() {
     useEffect(() => {
         const fetchShift = async () => {
             try {
-                const response = await fetch('http://164.90.168.113/shifts', {
+                const response = await fetch('https://164.90.168.113/shifts', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

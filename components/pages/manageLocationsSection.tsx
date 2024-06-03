@@ -26,12 +26,12 @@ export function ManageLocationsSection() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const locationsResponse = await fetch('http://164.90.168.113/locations');
+                const locationsResponse = await fetch('https://164.90.168.113/locations');
                 if (!locationsResponse.ok) throw new Error('Failed to fetch locations');
                 const locationsData = await locationsResponse.json();
                 setLocations(locationsData);
 
-                const employeesResponse = await fetch('http://164.90.168.113/employees');
+                const employeesResponse = await fetch('https://164.90.168.113/employees');
                 if (!employeesResponse.ok) throw new Error('Failed to fetch employees');
                 const employeesData = await employeesResponse.json();
                 setEmployees(employeesData);
@@ -59,7 +59,7 @@ export function ManageLocationsSection() {
         const updatedLocationId = employeeList.find(emp => emp.id === employeeId)?.locationId === firstLocation ? secondLocation : firstLocation;
 
         try {
-            const response = await fetch(`http://164.90.168.113/employees/${employeeId}`, {
+            const response = await fetch(`https://164.90.168.113/employees/${employeeId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

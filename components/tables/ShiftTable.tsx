@@ -23,7 +23,7 @@ export default function CurrentShiftTable(props: { financeView: Boolean, shift: 
   async function handleClose(visit: Visit) {
     console.log("Close button clicked");
     const date = new Date().toISOString()
-    const response = await fetch(`http://164.90.168.113/visits/calculate-price`, {
+    const response = await fetch(`https://164.90.168.113/visits/calculate-price`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -36,7 +36,7 @@ export default function CurrentShiftTable(props: { financeView: Boolean, shift: 
     });
     const res = await response.json();
     console.log(res.price);
-    const response1 = await fetch(`http://164.90.168.113/visits/${visit.id}/close`, {
+    const response1 = await fetch(`https://164.90.168.113/visits/${visit.id}/close`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -54,7 +54,7 @@ export default function CurrentShiftTable(props: { financeView: Boolean, shift: 
   useEffect(() => {
     const fetchVisits = async () => {
       try {
-        const response = await fetch('http://164.90.168.113/visits', {
+        const response = await fetch('https://164.90.168.113/visits', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

@@ -50,7 +50,7 @@ function formReducer(state: FormState, action: FormAction): FormState {
 }
 
 const fetchLocations = async () => {
-    const response = await fetch('http://164.90.168.113/locations', {
+    const response = await fetch('https://164.90.168.113/locations', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ export default function Register() {
         };
 
         try {
-            const response = await fetch('http://164.90.168.113/employees', {
+            const response = await fetch('https://164.90.168.113/employees', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

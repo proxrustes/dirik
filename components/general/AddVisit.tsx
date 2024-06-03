@@ -22,7 +22,7 @@ export function AddVisitPopup() {
     useEffect(() => {
         const fetchShift = async () => {
             try {
-                const response = await fetch('http://164.90.168.113/shifts', {
+                const response = await fetch('https://164.90.168.113/shifts', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ export function AddVisitPopup() {
     useEffect(() => {
         const fetchLocations = async () => {
             try {
-                const response = await fetch('http://164.90.168.113/locations', {
+                const response = await fetch('https://164.90.168.113/locations', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ export function AddVisitPopup() {
                 locationId: location?.id
             };
             try {
-                const response = await fetch('http://164.90.168.113/visits', {
+                const response = await fetch('https://164.90.168.113/visits', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
