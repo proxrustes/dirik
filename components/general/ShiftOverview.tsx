@@ -9,7 +9,7 @@ import { AddVisitPopup } from "./AddVisit";
 import { format } from "date-fns";
 
 async function handleClose(shiftId: number) {
-    const response = await fetch(`http://164.90.168.113/shifts/${shiftId}/close`, {
+    const response = await fetch(`https://164.90.168.113/shifts/${shiftId}/close`, {
         method: 'POST',
         headers: {
             'Accept': 'application/json'
