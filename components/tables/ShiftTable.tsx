@@ -102,7 +102,7 @@ export default function CurrentShiftTable(props: { financeView: Boolean, shift: 
                 </TableCell>
                 <TableCell align='center'>{visit.clientsAmount}</TableCell>
                 <TableCell align='center'>{format(new Date(visit.startAt), "MMMM do h:mm:ss")}</TableCell>
-                <TableCell align='center'>{visit.endAt ?? <Button onClick={()=>handleClose(visit)} variant='outlined' sx={{ fontSize: "10px", padding: "2px 5px" }}>close</Button>}</TableCell>
+                <TableCell align='center'>{visit.endAt ? format(new Date(visit.endAt), "MMMM do h:mm:ss") : <Button onClick={()=>handleClose(visit) } variant='outlined' sx={{ fontSize: "10px", padding: "2px 5px" }}>close</Button>}</TableCell>
                 {visit.endAt ? <TableCell align='center' />
                   : <TableCell align='center'>
                     <Tooltip title="Delete">
@@ -155,10 +155,10 @@ export default function CurrentShiftTable(props: { financeView: Boolean, shift: 
                     {visit.totemName}
                   </Stack>
                 </TableCell>
-                <TableCell align='center'>{visit.price}</TableCell>
-                <TableCell align='center'>{visit.resultPrice}</TableCell>
-                <TableCell align='center'>{visit.cash}</TableCell>
-                <TableCell align='center'>{visit.terminal}</TableCell>
+                <TableCell align='center'>{visit.price} $</TableCell>
+                <TableCell align='center'>{visit.resultPrice.toFixed(2)} $</TableCell>
+                <TableCell align='center'>{visit.cash.toFixed(2)} $</TableCell>
+                <TableCell align='center'>{visit.terminal.toFixed(2)} $</TableCell>
                 <TableCell align='center'>
                     <Tooltip title="Delete">
                       <IconButton>

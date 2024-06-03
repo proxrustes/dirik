@@ -1,11 +1,12 @@
 import { Shift } from "@/definitions/types/Shift";
-import { Button, Stack, Typography } from "@mui/material";
+import { Button, CircularProgress, Stack, Typography } from "@mui/material";
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
 import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined';
 import { ReactNode } from "react";
 import { AddVisitPopup } from "./AddVisit";
+import { format } from "date-fns";
 
 async function handleClose(shiftId: number) {
     const response = await fetch(`http://164.90.168.113/shifts/${shiftId}/close`, {
@@ -27,7 +28,7 @@ export function ShiftStatsIcon(props: { icon: ReactNode, title: string, display:
 }
 export function ShiftOverviewBox(props: { shift: Shift | undefined }) {
     if (props.shift === undefined) {
-        return <Typography>error</Typography>
+        return <CircularProgress />
     }
     return (
         <Stack gap={4} sx={{ p: "22px", height: "fit-content", borderRadius: 5, borderWidth: 1.5, borderStyle: "solid", borderColor: "primary.dark" }}>
@@ -37,7 +38,7 @@ export function ShiftOverviewBox(props: { shift: Shift | undefined }) {
 
             <Stack gap={2}>
                 <Stack direction="row" gap={2}>
-                    <ShiftStatsIcon icon={<CalendarMonthOutlinedIcon sx={{ fontSize: 60, color: "primary.main" }} />} title="START DATE" display={props.shift.startDate} />
+                    <ShiftStatsIcon icon={<CalendarMonthOutlinedIcon sx={{ fontSize: 60, color: "primary.main" }} />} title="START DATE" display={format(new Date(props.shift.startDate), "MMM do")} />
                     <ShiftStatsIcon icon={<PaymentsOutlinedIcon sx={{ fontSize: 60, color: "primary.main" }} />} title="AVAILABLE CASH" display={`${props.shift.availableCash} $`} />
                 </Stack>
                 <Stack direction="row" gap={2}>

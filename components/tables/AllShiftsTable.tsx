@@ -8,6 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import { TablePagination } from '@mui/material';
 import { Shift } from '@/definitions/types/Shift';
 import { useEffect, useState } from 'react';
+import { format } from 'date-fns';
 
 export default function ShiftsTable(props: { locationId: number }) {
   const [page, setPage] = useState(0);
@@ -59,10 +60,10 @@ export default function ShiftsTable(props: { locationId: number }) {
                 <TableCell component="th" scope="row">
                   {shift.id}
                 </TableCell>
-                <TableCell align='center'>{shift.startDate}</TableCell>
-                <TableCell align='center'>{shift.availableCash}</TableCell>
-                <TableCell align='center'>{shift.totalCash}</TableCell>
-                <TableCell align='center'>{shift.totalMoney}</TableCell>
+                <TableCell align='center'>{format(new Date(shift.startDate), "MMMM do h:mm:ss")}</TableCell>
+                <TableCell align='center'>{shift.availableCash} $</TableCell>
+                <TableCell align='center'>{shift.totalCash} $</TableCell>
+                <TableCell align='center'>{shift.totalMoney} $</TableCell>
               </TableRow>
             ))}
         </TableBody>

@@ -10,8 +10,9 @@ import AlbumIcon from '@mui/icons-material/Album';
 import CloseIcon from '@mui/icons-material/Close';
 import { Visit } from '@/definitions/types/Visit';
 import { useEffect, useState } from 'react';
+import { format } from 'date-fns';
 
-export default function VisitsTable(props: { locationId: number }) {
+export default function VisitsTable() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [visits, setVisits] = useState<Visit[]>([]);
@@ -92,9 +93,8 @@ export default function VisitsTable(props: { locationId: number }) {
                   </Stack>
                 </TableCell>
                 <TableCell align='center'>{visit.clientsAmount}</TableCell>
-                <TableCell align='center'>{visit.startAt} </TableCell>
-                <TableCell align='center'>{visit.endAt ?? <Button onClick={() => handleClose(visit)} variant='outlined' sx={{ fontSize: "10px", padding: "2px 5px" }}>close</Button>}</TableCell>
-
+                <TableCell align='center'>{format(new Date(visit.startAt), "MMMM do h:mm:ss")} </TableCell>
+                <TableCell align='center'>{visit.endAt ? format(new Date(visit.endAt), "MMMM do h:mm:ss") : <Button onClick={() => handleClose(visit)} variant='outlined' sx={{ fontSize: "10px", padding: "2px 5px" }}>close</Button>}</TableCell>
               </TableRow>
             ))}
         </TableBody>

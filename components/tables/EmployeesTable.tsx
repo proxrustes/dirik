@@ -74,9 +74,9 @@ if (employees.length == 0){
                 {employee.fullName}
               </TableCell>
               <TableCell align='center'>{employee.position}</TableCell>
-              <TableCell align='center'>{employee.salaryFixed}</TableCell>
-              <TableCell align='center'>{employee.salarayPercent}</TableCell>
-              <TableCell align='center'>{employee.availableSalary}</TableCell>
+              <TableCell align='center'>{employee.salaryFixed} $</TableCell>
+              <TableCell align='center'>{employee.salarayPercent} %</TableCell>
+              <TableCell align='center'>{employee.availableSalary} $</TableCell>
               <TableCell align='center'>
               <Tooltip title="Edit">
                       <IconButton disabled>

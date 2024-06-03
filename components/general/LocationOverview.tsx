@@ -11,7 +11,7 @@ export function ShiftStatsIcon(props: { icon: ReactNode, title: string, display:
             <Typography sx={{ fontSize: 10, color: "primary.main" }}>{props.title}</Typography>
             <Typography sx={{ fontWeight: 600 }}>{props.display}</Typography>
         </Stack>
-    );
+    )
 }
 export function LocationOverviewBox(props: { location: CafeLocation }) {
     return (
