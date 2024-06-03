@@ -17,6 +17,8 @@ export async function login(prevState: any, formData: FormData) {
     if (email !== "wifeofwriter@gmail.com" || password !== "123") {
         return { error: true }
     }
+    console.log("login")
+    console.log(email, password)
     const db_user: TokenUser = { id: 0, fullName: "Maria", position: "admin", locationId: 0 };
     if (db_user) {
         const jwt = await sign(

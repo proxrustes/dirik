@@ -7,7 +7,6 @@ import { useState } from "react";
 import { Shift } from "@/definitions/types/Shift";
 import { useEffect } from "react";
 
-
 export function VisitsSection() {
     const [currentShift, setShift] = useState<Shift>();
 
