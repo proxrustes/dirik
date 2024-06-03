@@ -13,13 +13,16 @@ import { Visit } from '@/definitions/types/Visit';
 import AlbumIcon from '@mui/icons-material/Album';
 import { useEffect, useState } from 'react';
 import { Shift } from '@/definitions/types/Shift';
+import { format } from 'date-fns'
 
 export default function CurrentShiftTable(props: { financeView: Boolean, shift: Shift }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [visits, setVisits] = useState<Visit[]>([])
+
   async function handleClose(visit: Visit) {
     console.log("Close button clicked");
+    const date = new Date().toISOString()
     const response = await fetch(`http://164.90.168.113/visits/calculate-price`, {
       method: 'POST',
       headers: {
@@ -28,7 +31,7 @@ export default function CurrentShiftTable(props: { financeView: Boolean, shift: 
       body: JSON.stringify({
         "shiftId": visit.shiftId,
         "startAt": visit.startAt,
-        "endAt": new Date().toISOString()
+        "endAt": date
       })
     });
     const res = await response.json();
@@ -41,7 +44,8 @@ export default function CurrentShiftTable(props: { financeView: Boolean, shift: 
       body: JSON.stringify({
         resultPrice: res.price,
         cash: res.price,
-        terminal: 0
+        terminal: 0,
+        endAt: date
       })
     });
     console.log(await response1.json());
@@ -97,7 +101,7 @@ export default function CurrentShiftTable(props: { financeView: Boolean, shift: 
                   </Stack>
                 </TableCell>
                 <TableCell align='center'>{visit.clientsAmount}</TableCell>
-                <TableCell align='center'>{visit.startAt}</TableCell>
+                <TableCell align='center'>{format(new Date(visit.startAt), "MMMM do h:mm:ss")}</TableCell>
                 <TableCell align='center'>{visit.endAt ?? <Button onClick={()=>handleClose(visit)} variant='outlined' sx={{ fontSize: "10px", padding: "2px 5px" }}>close</Button>}</TableCell>
                 {visit.endAt ? <TableCell align='center' />
                   : <TableCell align='center'>
@@ -156,11 +160,6 @@ export default function CurrentShiftTable(props: { financeView: Boolean, shift: 
                 <TableCell align='center'>{visit.cash}</TableCell>
                 <TableCell align='center'>{visit.terminal}</TableCell>
                 <TableCell align='center'>
-                <Tooltip title="Edit">
-                      <IconButton>
-                        <EditIcon sx={{ fontSize: "20px" }} />
-                      </IconButton>
-                    </Tooltip>
                     <Tooltip title="Delete">
                       <IconButton>
                         <CloseIcon sx={{ fontSize: "20px", color: "error.main" }} />
