@@ -10,7 +10,7 @@ export function ShiftsSection() {
 
     useEffect(() => {
         const fetchLocations = async () => {
-            const response = await fetch('http://164.90.168.113/locations', {
+            const response = await fetch('https://164.90.168.113/locations', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'

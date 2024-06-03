@@ -92,7 +92,6 @@ export default function Register() {
     }, []);
 
     async function register() {
-        // Fill missing fields with fake data
         const employeeData = {
             fullName: state.fullName || 'John Doe',
             email: state.email || 'john.doe@example.com',

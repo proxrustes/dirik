@@ -16,7 +16,6 @@ export default function RootLayout({
   return (
     <html lang="en">
        <head>
-        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
         <title>Dirik</title>
       </head>
       <body>
